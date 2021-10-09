@@ -57,6 +57,7 @@ class l1b(initL1b):
 
         self.logger.info("End of the L1B Module!")
 
+        Diftoa = self.differences(toa, toa_l1b_ref)
 
     def equalization(self, toa, eq_add, eq_mult):
         """
@@ -90,10 +91,13 @@ class l1b(initL1b):
         #TODO
 
 
-    def differences(toa_l1b, toa_l1b_ref):
-        toaA = np.array(toa_l1b)
+    def differences(self, toa, toa_l1b_ref):
+        toaA = np.array(toa)
         toaB = np.array(toa_l1b_ref)
-        diffe = np.mean(toaA != toaB )
+        diffe = toaA - toaB
+
+
+
         return diffe
 
 
