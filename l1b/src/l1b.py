@@ -26,7 +26,7 @@ class l1b(initL1b):
             # -------------------------------------------------------------------------------
             toa = readToa(self.indir, self.globalConfig.ism_toa + band + '.nc')
 
-           toa_l1b_ref = readToa(self.indir, self.globalConfig.ism_toa + band + '.nc')
+            toa_l1b_ref = readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-L1B/output/", "l1b_toa_eq_" + band + '.nc')
 
 
 
@@ -51,7 +51,7 @@ class l1b(initL1b):
             # Write output TOA
             # -------------------------------------------------------------------------------
             writeToa(self.outdir, self.globalConfig.l1b_toa + band, toa)
-            self.plotL1bToa(toa, self.outdir, band)
+            #self.plotL1bToa(toa, self.outdir, band)
 
             self.logger.info("End of BAND " + band)
 
@@ -86,8 +86,15 @@ class l1b(initL1b):
 
         return toa
 
-    def plotL1bToa(self, toa_l1b, outputdir, band):
+    #def plotL1bToa(self, toa_l1b, outputdir, band):
         #TODO
-      plt.plot()
+
+
+    def differences(toa_l1b, toa_l1b_ref):
+        toaA = np.array(toa_l1b)
+        toaB = np.array(toa_l1b_ref)
+        diffe = np.mean(toaA != toaB )
+        return diffe
+
 
 
