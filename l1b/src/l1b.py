@@ -26,7 +26,7 @@ class l1b(initL1b):
             # -------------------------------------------------------------------------------
             toa = readToa(self.indir, self.globalConfig.ism_toa + band + '.nc')
 
-            toa_l1b_ref = readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-L1B/output/", "l1b_toa_eq_" + band + '.nc')
+            toa_l1b_ref = readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-L1B/output/", self.globalConfig.l1b_toa + band + '.nc')
 
 
 
@@ -53,11 +53,15 @@ class l1b(initL1b):
             writeToa(self.outdir, self.globalConfig.l1b_toa + band, toa)
             #self.plotL1bToa(toa, self.outdir, band)
 
+            Diftoa = self.differences(toa, toa_l1b_ref)  # Punto 1
+
+            toa_isrf=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_isrf_" + band + '.nc' )
+
             self.logger.info("End of BAND " + band)
 
         self.logger.info("End of the L1B Module!")
 
-        Diftoa = self.differences(toa, toa_l1b_ref)
+
 
     def equalization(self, toa, eq_add, eq_mult):
         """
@@ -94,11 +98,24 @@ class l1b(initL1b):
     def differences(self, toa, toa_l1b_ref):
         toaA = np.array(toa)
         toaB = np.array(toa_l1b_ref)
-        diffe = toaA - toaB
+        diffe = toaB - toaA
+        Multi = toaB*0.01
+        C=0
+
+        for i in range(toaA.shape[0]):
+
+            for j in range(toaA.shape[1]):
+
+                if diffe > Multi:
+
+                    C=C+1
+
+        if C != 0:
+            print("Error")
 
 
 
-        return diffe
+        return C
 
 
 
