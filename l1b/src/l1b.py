@@ -57,6 +57,10 @@ class l1b(initL1b):
 
             toa_isrf=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_isrf_" + band + '.nc' )
 
+            figone= self.plottwo(toa, toa_isrf)
+            figone.savefig("/home/luss/my_shared_folder/test_L1b/Figure_" + band + 'png')
+
+
             self.logger.info("End of BAND " + band)
 
         self.logger.info("End of the L1B Module!")
@@ -106,7 +110,7 @@ class l1b(initL1b):
 
             for j in range(toaA.shape[1]):
 
-                if diffe > Multi:
+                if diffe[i,j] > Multi[i,j]:
 
                     C=C+1
 
@@ -116,6 +120,27 @@ class l1b(initL1b):
 
 
         return C
+
+    def plottwo(self, toa, toa_isrf):
+
+
+        toaPA = np.array(toa)
+        toaPB = np.array(toa_isrf)
+
+        PA=toaPA[49]
+        PB=toaPB[49]
+        fig=plt.figure(figsize=(10, 10))
+        plt.plot(range(150), PA, label="toa 1")
+        plt.plot(range(150), PB, label="toa 2")
+
+        plt.ylabel("TOA")
+        plt.xlabel("pixels across track")
+        plt.legend()
+
+        return fig
+
+
+
 
 
 
