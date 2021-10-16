@@ -123,10 +123,7 @@ class detectionPhase(initIsm):
         """
         #TODO
 
-
-
-
-
+        toae=toa*QE
 
 
         return toae
@@ -152,6 +149,13 @@ class detectionPhase(initIsm):
         :return: TOA after adding PRNU [e-]
         """
         #TODO
+
+        PRNU=np.abs(np.random.normal(0,1,150))*kprnu
+
+        for i in range(0,toa.shape[1]):
+
+            toa[:,1]=toa[:,1]*(1+PRNU)
+
         return toa
 
 
@@ -167,4 +171,12 @@ class detectionPhase(initIsm):
         :return: TOA in [e-] with dark signal
         """
         #TODO
+        DSNU=np.abs(np.random.normal(0,1,150))*kdsnu
+        sd=ds_A_coeff*(T/Tref)^3*np.exp(-ds_B_coeff((1/T)-(1/Tref)))
+        DS=sd*(1+DSNU)
+
+        for i in range(0,toa.shape[1]):
+
+            toa[:,1]=toa[:,1]+DS
+
         return toa
