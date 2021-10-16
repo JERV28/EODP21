@@ -105,6 +105,13 @@ class detectionPhase(initIsm):
         :return: Toa in photons
         """
         #TODO
+
+        Ein=toa*area_pix*tint
+        Ephoton=(self.constants.h_planck*self.constants.speed_light)/(wv)
+
+        toa_ph = Ein/Ephoton
+
+
         return toa_ph
 
     def phot2Electr(self, toa, QE):
@@ -115,6 +122,13 @@ class detectionPhase(initIsm):
         :return: toa in electrons
         """
         #TODO
+
+
+
+
+
+
+
         return toae
 
     def badDeadPixels(self, toa,bad_pix,dead_pix,bad_pix_red,dead_pix_red):

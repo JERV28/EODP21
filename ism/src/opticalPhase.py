@@ -1,3 +1,4 @@
+import os
 
 from ism.src.initIsm import initIsm
 from math import pi
@@ -108,7 +109,7 @@ class opticalPhase(initIsm):
         GE= fft2(toa)
         Hsys2= fftshift(Hsys)
         toa_ft=np.real(ifft2(GE*Hsys2))
-        
+
 
         return toa_ft
 
@@ -121,6 +122,20 @@ class opticalPhase(initIsm):
         :return: TOA image 2D in radiances [mW/m2]
         """
         # TODO
-        return sgm_toa
+
+        isrf, wv_isrf = readIsrf(os.path.join(self.auxdir,self.ismConfig.isrffile),band)
+        wv_isfr=wv_isrf*1000
+        isrf_n=isrf/np.sum(isrf)
+
+        sgm_toa=np.array(sgm_toa)
+        fsgm=np.zeros([sgm_toa.shape[0]],sgm_toa.shape[1])
+        for i in range(sgm_toa.shape[0]):
+            for j in range(sgm_toa.shape[1]):
+                cs=interp1d(sgm_wv,sgm_toa[i,j,:],fill_value=(0,0),bounds_error=False)
+                toa_i=cs(wv_isrf)
+                fsgm[i,j]=np.sum(isrf_n*toa_i)
+
+        return fsgm
+
 
 
