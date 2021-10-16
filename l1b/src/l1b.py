@@ -26,6 +26,8 @@ class l1b(initL1b):
             # -------------------------------------------------------------------------------
             toa = readToa(self.indir, self.globalConfig.ism_toa + band + '.nc')
 
+            toa2 = readToa(self.indir, self.globalConfig.ism_toa + band + '.nc')
+
             toa_l1b_ref = readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-L1B/output/", self.globalConfig.l1b_toa + band + '.nc')
 
 
@@ -48,6 +50,13 @@ class l1b(initL1b):
             self.logger.info("EODP-ALG-L1B-1020: Absolute radiometric gain application (restoration)")
             toa = self.restoration(toa, self.l1bConfig.gain[getIndexBand(band)])
 
+            # Restitution (absolute radiometric gain) 2
+            # -------------------------------------------------------------------------------
+            self.logger.info("EODP-ALG-L1B-1020: Absolute radiometric gain application (restoration)")
+            toa2 = self.restoration(toa2, self.l1bConfig.gain[getIndexBand(band)])
+
+
+
             # Write output TOA
             # -------------------------------------------------------------------------------
             writeToa(self.outdir, self.globalConfig.l1b_toa + band, toa)
@@ -59,6 +68,10 @@ class l1b(initL1b):
 
             figone= self.plottwo(toa, toa_isrf)
             figone.savefig("/home/luss/my_shared_folder/test_L1b/Figure_" + band + 'png')
+
+            figtwo= self.plottwo2(toa, toa2)
+            figtwo.savefig("/home/luss/my_shared_folder/test_L1b/Figure2_" + band + 'png')
+
 
 
             self.logger.info("End of BAND " + band)
@@ -140,6 +153,23 @@ class l1b(initL1b):
         return fig
 
 
+    def plottwo2(self, toa, toa2):
+
+
+        toaPA = np.array(toa)
+        toaPB = np.array(toa2)
+
+        PA=toaPA[49]
+        PB=toaPB[49]
+        fig=plt.figure(figsize=(10, 10))
+        plt.plot(range(150), PA, label="toa 1")
+        plt.plot(range(150), PB, label="toa 2")
+
+        plt.ylabel("TOA")
+        plt.xlabel("pixels across track")
+        plt.legend()
+
+        return fig
 
 
 
