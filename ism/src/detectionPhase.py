@@ -126,6 +126,13 @@ class detectionPhase(initIsm):
         toae=toa*QE
 
 
+
+        for i in range(0, toa.shape[0]):
+            for j in range(0,toa.shape[1]):
+                if toa[i,j]>self.ismConfig.FWC:
+                    toa[i,j]=self.ismConfig.FWC
+
+
         return toae
 
     def badDeadPixels(self, toa,bad_pix,dead_pix,bad_pix_red,dead_pix_red):
@@ -139,6 +146,20 @@ class detectionPhase(initIsm):
         :return: toa in e- including bad & dead pixels
         """
         #TODO
+
+        nbad=int(bad_pix/100)*toa.shape[1]
+        ndead=int(dead_pix/100)*toa.shape[1]
+
+        if nbad!=0:
+            step_bad=toa.shape[1]/nbad
+            for i in range (5,toa.shape[1],step_bad):
+                toa[:,i]=toa[:,i]*(1-bad_pix_red)
+        if ndead!=0:
+            step_dead=toa.shape[1]/ndead
+            for i in range (0,toa.shape[1],step_dead):
+                toa[:,i]=toa[:,i]*(1-dead_pix_red)
+
+
         return toa
 
     def prnu(self, toa, kprnu):
