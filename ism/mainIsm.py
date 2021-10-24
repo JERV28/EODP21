@@ -11,3 +11,6 @@ outdir = '/home/luss/my_shared_folder/test_ISM/'
 # Initialise the ISM
 myIsm = ism(auxdir, indir, outdir)
 myIsm.processModule()
+
+
+

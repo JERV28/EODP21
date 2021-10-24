@@ -171,11 +171,11 @@ class detectionPhase(initIsm):
         """
         #TODO
 
-        PRNU=np.abs(np.random.normal(0,1,150))*kprnu
+        PRNU=np.random.normal(0,1,150)*kprnu
 
         for i in range(0,toa.shape[1]):
 
-            toa[:,1]=toa[:,1]*(1+PRNU)
+            toa[:,1]=toa[:,1]*(1+PRNU[i])
 
         return toa
 
@@ -193,11 +193,11 @@ class detectionPhase(initIsm):
         """
         #TODO
         DSNU=np.abs(np.random.normal(0,1,150))*kdsnu
-        sd=ds_A_coeff*(T/Tref)^3*np.exp(-ds_B_coeff((1/T)-(1/Tref)))
+        sd=ds_A_coeff*((T/Tref)**3)*np.exp(-ds_B_coeff*((1/T)-(1/Tref)))
         DS=sd*(1+DSNU)
 
         for i in range(0,toa.shape[1]):
 
-            toa[:,1]=toa[:,1]+DS
+            toa[:,1]=toa[:,1]+DS[i]
 
         return toa

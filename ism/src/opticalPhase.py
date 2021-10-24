@@ -1,5 +1,6 @@
 import os
 
+from common.io.writeToa import writeToa, readToa
 from ism.src.initIsm import initIsm
 from math import pi
 from ism.src.mtf import mtf
@@ -12,6 +13,7 @@ from common.plot.plotMat2D import plotMat2D
 from common.plot.plotF import plotF
 from scipy.signal import convolve2d
 from common.src.auxFunc import getIndexBand
+import matplotlib.pyplot as plt
 
 class opticalPhase(initIsm):
 
@@ -32,7 +34,7 @@ class opticalPhase(initIsm):
         # -------------------------------------------------------------------------------
         self.logger.info("EODP-ALG-ISM-1010: Spectral modelling. ISRF")
         toa = self.spectralIntegration(sgm_toa, sgm_wv, band)
-
+        toa_isrf=toa
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [e-]")
 
         if self.ismConfig.save_after_isrf:
@@ -82,6 +84,32 @@ class opticalPhase(initIsm):
             saveas_str = saveas_str + '_alt' + str(idalt)
             plotF([], toa[idalt,:], title_str, xlabel_str, ylabel_str, self.outdir, saveas_str)
 
+
+
+            #----------------------------------------------------------------------
+
+            writeToa(self.outdir, self.globalConfig.l1b_toa + band, toa)
+            #self.plotL1bToa(toa, self.outdir, band)
+
+
+
+
+            toa_isrf_L=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/", self.globalConfig.ism_toa_isrf + band + '.nc' )
+            toa_optical=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_optical_" + band + '.nc' )
+
+            Diftoa = self.differences(toa, toa_optical)  # Punto 1
+
+            figone= self.plottwo(toa_isrf, toa_isrf_L)
+            figone.savefig("/home/luss/my_shared_folder/test_ISM/Figure_" + band + 'png')
+
+            figtwo= self.plottwo2(toa, toa_optical)
+            figtwo.savefig("/home/luss/my_shared_folder/test_ISM/Figure2_" + band + 'png')
+
+
+
+
+
+
         return toa
 
     def rad2Irrad(self, toa, D, f, Tr):
@@ -128,7 +156,7 @@ class opticalPhase(initIsm):
         isrf_n=isrf/np.sum(isrf)
 
         sgm_toa=np.array(sgm_toa)
-        fsgm=np.zeros([sgm_toa.shape[0]],sgm_toa.shape[1])
+        fsgm=np.zeros([sgm_toa.shape[0],sgm_toa.shape[1]])
         for i in range(sgm_toa.shape[0]):
             for j in range(sgm_toa.shape[1]):
                 cs=interp1d(sgm_wv,sgm_toa[i,j,:],fill_value=(0,0),bounds_error=False)
@@ -139,3 +167,65 @@ class opticalPhase(initIsm):
 
 
 
+
+##-----------------------
+
+
+    def differences(self, toa, toa_optical):
+        toaA = np.array(toa)
+        toaB = np.array(toa_optical)
+        diffe = toaB - toaA
+        Multi = toaB*0.01
+        C=0
+
+        for i in range(toaA.shape[0]):
+
+            for j in range(toaA.shape[1]):
+
+                if diffe[i,j] > Multi[i,j]:
+
+                    C=C+1
+
+        if C != 0:
+            print("Error")
+
+
+
+        return C
+
+    def plottwo(self, toa, toa_isrf):
+
+
+        toaPA = np.array(toa)
+        toaPB = np.array(toa_isrf)
+
+        PA=toaPA[49]
+        PB=toaPB[49]
+        fig=plt.figure(figsize=(10, 10))
+        plt.plot(range(150), PA, label="toa 1")
+        plt.plot(range(150), PB, label="toa 2")
+
+        plt.ylabel("TOA")
+        plt.xlabel("pixels across track")
+        plt.legend()
+
+        return fig
+
+
+    def plottwo2(self, toa, toa_optical):
+
+
+        toaPA = np.array(toa)
+        toaPB = np.array(toa_optical)
+
+        PA=toaPA[49]
+        PB=toaPB[49]
+        fig=plt.figure(figsize=(10, 10))
+        plt.plot(range(150), PA, label="toa 1")
+        plt.plot(range(150), PB, label="toa 2")
+
+        plt.ylabel("TOA")
+        plt.xlabel("pixels across track")
+        plt.legend()
+
+        return fig

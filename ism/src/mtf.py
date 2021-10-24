@@ -97,7 +97,7 @@ class mtf:
 
         eps=10e-6
         fAlt = np.arange(-1/(2*w),1/(2*w)-eps,fstepAlt)
-        fAct = np.arange(-1/(2*w),1/2(2*w)-eps,fstepAct)
+        fAct = np.arange(-1/(2*w),1/(2*w)-eps,fstepAct)
 
         fnAlt=fAlt/(1/w)
         fnAct=fAct/(1/w)
@@ -107,7 +107,7 @@ class mtf:
 
         ecutoff = D/(lambd*focal)
 
-        fr2D=fn2D*(1/(w/ecutoff))
+        fr2D=fn2D*((1/w)/ecutoff)
 
         return fn2D, fr2D, fnAct, fnAlt
 
@@ -118,7 +118,7 @@ class mtf:
         :return: diffraction MTF
         """
         #TODO
-        Hdiff=(2/pi)*(np.arccos(fr2D)-fr2D*(1-(fr2D)^2)^1/2)
+        Hdiff=(2/pi)*(np.arccos(fr2D)-fr2D*(1-fr2D**2)**(1/2))
 
 
         return Hdiff
@@ -135,6 +135,7 @@ class mtf:
         """
         #TODO
 
+        x=pi*defocus*fr2D*(1-fr2D)
         Hdefoc=(2*j1(x))/(x)
 
         return Hdefoc
@@ -151,7 +152,7 @@ class mtf:
         :return: WFE Aberrations MTF
         """
         #TODO
-        Hwfe= np.exp(-fr2D*(1-fr2D)*(kLF*((wLF/lambd)^2)+kHF*((wHF/lambd)^2)))
+        Hwfe= np.exp(-fr2D*(1-fr2D)*(kLF*((wLF/lambd)**2)+kHF*((wHF/lambd)**2)))
 
         return Hwfe
 
@@ -178,7 +179,7 @@ class mtf:
         #TODO
 
         Hsmear= np.sinc(ksmear*fnAlt)
-        Hsmear= np.transpose(repmat(ncolumns, Hsmear, 1))
+        Hsmear= np.transpose(repmat(Hsmear, ncolumns, 1))
 
         return Hsmear
 
