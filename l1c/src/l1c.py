@@ -1,5 +1,6 @@
 
 # LEVEL-1C
+import sys
 
 from l1c.src.initL1c import initL1c
 from common.io.writeToa import writeToa, readToa
@@ -63,6 +64,32 @@ class l1c(initL1c):
         :return: L1C radiances, L1C latitude and longitude in degrees
         '''
         #TODO
+
+        tck = bisplrep(lat,lon,toa)
+
+        Alat=np.array(lat)
+        Alon=np.array(lon)
+
+        m = mgrs.MGRS()
+        mgrs_tiles = set([])
+
+        for i in range (0,Alat.shape[0]):
+            for j in range(0,Alat.shape[1]):
+                mgrs_tiles.add(str(m.toMGRS(Alat[i,j],Alon[i,j],inDegrees=True,MGRSPrecision=self.l1cConfig.mgrs_tile_precision)))
+
+        mgrs_tiles=list(mgrs_tiles)
+
+        lat_l1c=[]
+        lon_l1c=[]
+        toa_l1c=[]
+
+        for k in range (len(mgrs_tiles)):
+            Alat, Alon = m.toLatLon(mgrs_tiles[k],inDegrees=True)
+            lat_l1c.append(Alat)
+            lon_l1c.append(Alon)
+            toa_l1c.append(bisplev(Alat, Alon, tck))
+
+
         return lat_l1c, lon_l1c, toa_l1c
 
     def checkSize(self, lat,toa):
@@ -74,3 +101,8 @@ class l1c(initL1c):
         :return: NA
         '''
         #TODO
+
+        if lat.shape != toa.shape:
+
+            sys.exit()
+
