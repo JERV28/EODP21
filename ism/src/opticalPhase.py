@@ -51,6 +51,8 @@ class opticalPhase(initIsm):
 
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [e-]")
 
+
+
         # Spatial filter
         # -------------------------------------------------------------------------------
         # Calculation and application of the system MTF
@@ -97,13 +99,17 @@ class opticalPhase(initIsm):
             toa_isrf_L=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/", self.globalConfig.ism_toa_isrf + band + '.nc' )
             toa_optical=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_optical_" + band + '.nc' )
 
-            Diftoa = self.differences(toa, toa_optical)  # Punto 1
+            Diftoa = self.differences(toa, toa_optical)  #
+            DiftoaI = self.differencesTwo(toa, toa_isrf_L)  #
 
             figone= self.plottwo(toa_isrf, toa_isrf_L)
             figone.savefig("/home/luss/my_shared_folder/test_ISM/Figure_" + band + 'png')
 
             figtwo= self.plottwo2(toa, toa_optical)
             figtwo.savefig("/home/luss/my_shared_folder/test_ISM/Figure2_" + band + 'png')
+
+            Tr = self.ismConfig.Tr
+            print(Tr)
 
 
 
@@ -122,6 +128,7 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         toa = Tr*toa*((pi/4)*(D/f)**2)
+
 
         return toa
 
@@ -185,13 +192,45 @@ class opticalPhase(initIsm):
                 if diffe[i,j] > Multi[i,j]:
 
                     C=C+1
-
         if C != 0:
+            print("Error")
+        return C
+
+
+
+    def differencesTwo(self, toa, toa_isrf_L):
+        toaA = np.array(toa)
+        toaB = np.array(toa_isrf_L)
+        diffe = toaB - toaA
+        Multi = toaB*0.01
+        D=0
+
+        for i in range(toaA.shape[0]):
+
+            for j in range(toaA.shape[1]):
+
+                if diffe[i,j] > Multi[i,j]:
+
+                    D=D+1
+
+        if D != 0:
             print("Error")
 
 
 
-        return C
+        return D
+
+
+
+
+
+
+
+
+
+
+
+
 
     def plottwo(self, toa, toa_isrf):
 
