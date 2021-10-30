@@ -11,6 +11,9 @@ from scipy.interpolate import interp2d
 from numpy.fft import fftshift, ifft2
 import os
 
+
+
+
 class mtf:
     """
     Class MTF. Collects the analytical modelling of the different contributions
@@ -72,7 +75,8 @@ class mtf:
         Hsys = Hdiff*Hwfe*Hdefoc*Hdet*Hsmear*Hmotion
 
         # Plot cuts ACT/ALT of the MTF
-        self.plotMtf(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
+        fig=self.plotMtf(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
+        fig.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ACT" + band + 'png')
 
 
         return Hsys
@@ -216,5 +220,42 @@ class mtf:
         :return: N/A
         """
         #TODO
+
+
+        Hdiff_A=np.array(Hdiff)
+        Hdefoc_A=np.array(Hdefoc)
+        Hwfe_A=np.array(Hwfe)
+        Hdet_A=np.array(Hdet)
+        Hsmear_A=np.array(Hsmear)
+        Hmotion_A=np.array(Hmotion)
+        Hsys_A=np.array(Hsys)
+
+        H1=Hdiff_A[49]
+        H2=Hdefoc_A[49]
+        H3=Hwfe_A[49]
+        H4=Hdet_A[49]
+        H5=Hsmear_A[49]
+        H6=Hmotion_A[49]
+        H7=Hsys_A[49]
+
+
+        fig=plt.figure(figsize=(10, 10))
+        plt.plot(fnAct, H1, label="Difraction MTF")
+        plt.plot(fnAct, H2, label="Defocus MTF")
+        plt.plot(fnAct, H3, label="WFE Aberrations MTF")
+        plt.plot(fnAct, H4, label="Detector MTF")
+        plt.plot(fnAct, H5, label="Smearing MTF")
+        plt.plot(fnAct, H6, label="Motion blur MTF")
+        plt.plot(fnAct, H7, label="System MTF")
+
+        plt.ylabel("MTF")
+        plt.xlabel("Spatial frequencies")
+        plt.legend()
+
+
+
+
+
+        return fig
 
 

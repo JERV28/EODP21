@@ -116,6 +116,7 @@ class opticalPhase(initIsm):
 
 
 
+
         return toa
 
     def rad2Irrad(self, toa, D, f, Tr):
@@ -222,16 +223,6 @@ class opticalPhase(initIsm):
 
 
 
-
-
-
-
-
-
-
-
-
-
     def plottwo(self, toa, toa_isrf):
 
 
@@ -268,3 +259,8 @@ class opticalPhase(initIsm):
         plt.legend()
 
         return fig
+
+
+
+
+
