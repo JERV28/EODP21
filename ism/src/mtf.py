@@ -78,6 +78,8 @@ class mtf:
         fig=self.plotMtf(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
         fig.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ACT" + band + 'png')
 
+        figtwo=self.plotMtftwo(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
+        figtwo.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ALT" + band + 'png')
 
         return Hsys
 
@@ -254,8 +256,41 @@ class mtf:
 
 
 
-
-
         return fig
 
 
+    def plotMtftwo(self,Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band):
+
+
+        Hdiff_A=np.array(Hdiff)
+        Hdefoc_A=np.array(Hdefoc)
+        Hwfe_A=np.array(Hwfe)
+        Hdet_A=np.array(Hdet)
+        Hsmear_A=np.array(Hsmear)
+        Hmotion_A=np.array(Hmotion)
+        Hsys_A=np.array(Hsys)
+
+
+        H11=Hdiff_A[:,74]
+        H22=Hdefoc_A[:,74]
+        H33=Hwfe_A[:,74]
+        H44=Hdet_A[:,74]
+        H55=Hsmear_A[:,74]
+        H66=Hmotion_A[:,74]
+        H77=Hsys_A[:,74]
+
+
+        figtwo=plt.figure(figsize=(10, 10))
+        plt.plot(fnAlt, H11, label="Difraction MTF")
+        plt.plot(fnAlt, H22, label="Defocus MTF")
+        plt.plot(fnAlt, H33, label="WFE Aberrations MTF")
+        plt.plot(fnAlt, H44, label="Detector MTF")
+        plt.plot(fnAlt, H55, label="Smearing MTF")
+        plt.plot(fnAlt, H66, label="Motion blur MTF")
+        plt.plot(fnAlt, H77, label="System MTF")
+
+        plt.ylabel("MTF")
+        plt.xlabel("Spatial frequencies")
+        plt.legend()
+
+        return figtwo
