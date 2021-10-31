@@ -67,10 +67,10 @@ class l1b(initL1b):
             toa_isrf=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_isrf_" + band + '.nc' )
 
             figone= self.plottwo(toa, toa_isrf)
-            figone.savefig("/home/luss/my_shared_folder/test_L1b/Figure_" + band + 'png')
+            figone.savefig("/home/luss/my_shared_folder/test_L1b/Figure_" + band)
 
             figtwo= self.plottwo2(toa, toa2)
-            figtwo.savefig("/home/luss/my_shared_folder/test_L1b/Figure2_" + band + 'png')
+            figtwo.savefig("/home/luss/my_shared_folder/test_L1b/Figure2_" + band)
 
 
 
@@ -130,8 +130,6 @@ class l1b(initL1b):
         if C != 0:
             print("Error")
 
-
-
         return C
 
     def plottwo(self, toa, toa_isrf):
@@ -143,11 +141,11 @@ class l1b(initL1b):
         PA=toaPA[49]
         PB=toaPB[49]
         fig=plt.figure(figsize=(10, 10))
-        plt.plot(range(150), PA, label="toa 1")
-        plt.plot(range(150), PB, label="toa 2")
+        plt.plot(range(150), PA, label="Toa l1b")
+        plt.plot(range(150), PB, label="Toa ISRF")
 
         plt.ylabel("TOA")
-        plt.xlabel("pixels across track")
+        plt.xlabel("ACT pixel")
         plt.legend()
 
         return fig
@@ -162,11 +160,11 @@ class l1b(initL1b):
         PA=toaPA[49]
         PB=toaPB[49]
         fig=plt.figure(figsize=(10, 10))
-        plt.plot(range(150), PA, label="toa 1")
-        plt.plot(range(150), PB, label="toa 2")
+        plt.plot(range(150), PA, label="Toa l1b with Eq")
+        plt.plot(range(150), PB, label="Toa l1b no Eq")
 
         plt.ylabel("TOA")
-        plt.xlabel("pixels across track")
+        plt.xlabel("ACT pixel")
         plt.legend()
 
         return fig

@@ -21,6 +21,9 @@ class videoChainPhase(initIsm):
 
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [V]")
 
+        OCF = self.ismConfig.OCF
+        print("OCF=",OCF)
+
         # Digitisation
         # -------------------------------------------------------------------------------
         self.logger.info("EODP-ALG-ISM-3020: Voltage to Digital Numbers – Digitisation")
@@ -42,6 +45,9 @@ class videoChainPhase(initIsm):
             idalt = int(toa.shape[0]/2)
             saveas_str = saveas_str + '_alt' + str(idalt)
             plotF([], toa[idalt,:], title_str, xlabel_str, ylabel_str, self.outdir, saveas_str)
+
+
+
 
         return toa
 
@@ -83,6 +89,7 @@ class videoChainPhase(initIsm):
                     toa_dn[i,j]=(2**bit_depth)-1
                 elif toa_dn[i,j]<0:
                     toa_dn[i,j]=0
+
 
 
         return toa_dn

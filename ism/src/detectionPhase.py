@@ -26,6 +26,9 @@ class detectionPhase(initIsm):
 
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [ph]")
 
+
+
+
         # Photon to electrons conversion
         # -------------------------------------------------------------------------------
         self.logger.info("EODP-ALG-ISM-2030: Photons to Electrons")
@@ -111,6 +114,8 @@ class detectionPhase(initIsm):
 
         toa_ph = Ein/Ephoton
 
+        print("Ein=",Ein)
+        print("Ephoton=",Ephoton)
 
         return toa_ph
 
@@ -131,6 +136,8 @@ class detectionPhase(initIsm):
             for j in range(0,toa.shape[1]):
                 if toa[i,j]>self.ismConfig.FWC:
                     toa[i,j]=self.ismConfig.FWC
+
+        print("QE=",QE)
 
 
         return toae
