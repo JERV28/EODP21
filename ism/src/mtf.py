@@ -76,10 +76,10 @@ class mtf:
 
         # Plot cuts ACT/ALT of the MTF
         fig=self.plotMtf(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
-        fig.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ACT" + band + 'png')
+        fig.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ACT_" + band)
 
         figtwo=self.plotMtftwo(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
-        figtwo.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ALT" + band + 'png')
+        figtwo.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ALT_" + band)
 
         return Hsys
 
