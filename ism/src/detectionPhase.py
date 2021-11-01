@@ -5,6 +5,8 @@ from common.io.writeToa import writeToa
 from common.plot.plotMat2D import plotMat2D
 from common.plot.plotF import plotF
 
+from common.io.writeToa import writeToa, readToa
+
 class detectionPhase(initIsm):
 
     def __init__(self, auxdir, indir, outdir):
@@ -95,6 +97,11 @@ class detectionPhase(initIsm):
             saveas_str = saveas_str + '_alt' + str(idalt)
             plotF([], toa[idalt,:], title_str, xlabel_str, ylabel_str, self.outdir, saveas_str)
 
+
+            toa_detection=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_detection_" + band + '.nc' )
+            Diftoa = self.differences(toa, toa_detection)
+
+
         return toa
 
 
@@ -109,7 +116,7 @@ class detectionPhase(initIsm):
         """
         #TODO
 
-        Ein=toa*area_pix*tint
+        Ein=(toa*area_pix*tint)/1000
         Ephoton=(self.constants.h_planck*self.constants.speed_light)/(wv)
 
         toa_ph = Ein/Ephoton
@@ -154,11 +161,11 @@ class detectionPhase(initIsm):
         """
         #TODO
 
-        nbad=int(bad_pix/100)*toa.shape[1]
-        ndead=int(dead_pix/100)*toa.shape[1]
+        nbad=int(bad_pix/100*toa.shape[1])
+        ndead=int(dead_pix/100*toa.shape[1])
 
         if nbad!=0:
-            step_bad=toa.shape[1]/nbad
+            step_bad=int(toa.shape[1]/nbad)
             for i in range (5,toa.shape[1],step_bad):
                 toa[:,i]=toa[:,i]*(1-bad_pix_red)
         if ndead!=0:
@@ -182,7 +189,7 @@ class detectionPhase(initIsm):
 
         for i in range(0,toa.shape[1]):
 
-            toa[:,1]=toa[:,1]*(1+PRNU[i])
+            toa[:,i]=toa[:,i]*(1+PRNU[i])
 
         return toa
 
@@ -205,6 +212,27 @@ class detectionPhase(initIsm):
 
         for i in range(0,toa.shape[1]):
 
-            toa[:,1]=toa[:,1]+DS[i]
+            toa[:,i]=toa[:,i]+DS[i]
 
         return toa
+
+
+    def differences(self, toa, toa_ism_detection):
+        toaA = np.array(toa)
+        toaB = np.array(toa_ism_detection)
+        diffe = toaB - toaA
+        Multi = toaB*0.01
+        C=0
+
+        for i in range(toaA.shape[0]):
+
+            for j in range(toaA.shape[1]):
+
+                if diffe[i,j] > Multi[i,j]:
+
+                    C=C+1
+
+        if C != 0:
+            print("Error")
+
+        return C

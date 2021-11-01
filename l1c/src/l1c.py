@@ -41,6 +41,22 @@ class l1c(initL1c):
 
             self.logger.info("End of BAND " + band)
 
+
+            lat = getCorners(lat)
+            lon = getCorners(lon)
+            fig = plt.figure(figsize=(20,10))
+            plt.plot(lon, lat, 'k', linewidth=2, label="L1B")
+            plt.plot(lon_l1c, lat_l1c, 'r.', markersize=5, label="L1C MGRS")
+            plt.title('Projection on ground', fontsize=20)
+            plt.xlabel('Longitude [deg]', fontsize=16)
+            plt.ylabel('Latitude [deg]', fontsize=16)
+            plt.grid()
+            plt.axis('equal')
+            plt.legend()
+            plt.savefig(self.outdir + 'footprint_' + band + '.png')
+            plt.close(fig)
+
+
         self.logger.info("End of the L1C Module!")
 
 
@@ -105,4 +121,6 @@ class l1c(initL1c):
         if lat.shape != toa.shape:
 
             sys.exit()
+
+
 
