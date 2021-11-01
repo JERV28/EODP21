@@ -34,6 +34,7 @@ class videoChainPhase(initIsm):
 
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [DN]")
 
+
         # Plot
         if self.ismConfig.save_vcu_stage:
             saveas_str = self.globalConfig.ism_toa_vcu + band
@@ -82,13 +83,19 @@ class videoChainPhase(initIsm):
         #TODO
 
         toa_dn=np.round((toa/(max_voltage-min_voltage))*(2**bit_depth-1))
+        x=0 # count the pixels
+        #y=0
 
         for i in range(toa_dn.shape[0]):
             for j in range (toa_dn.shape[1]):
                 if toa_dn[i,j]>((2**bit_depth)-1):
                     toa_dn[i,j]=(2**bit_depth)-1
+                    x=x+1
+                    #print("x=",x)
                 elif toa_dn[i,j]<0:
                     toa_dn[i,j]=0
+                    #y=y+1
+                    #print("y=",y)
 
 
 

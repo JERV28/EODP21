@@ -81,6 +81,8 @@ class mtf:
         figtwo=self.plotMtftwo(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
         figtwo.savefig("/home/luss/my_shared_folder/test_ISM/MTF_ALT_" + band)
 
+
+
         return Hsys
 
     def freq2d(self,nlines, ncolumns, D, lambd, focal, w):
@@ -254,6 +256,8 @@ class mtf:
         plt.xlabel("Spatial frequencies")
         plt.legend()
 
+        #h=Hsys[:,149]
+        #print("MTF=",h)
 
 
         return fig
