@@ -99,17 +99,17 @@ class opticalPhase(initIsm):
             toa_isrf_L=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/", self.globalConfig.ism_toa_isrf + band + '.nc' )
             toa_optical=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_optical_" + band + '.nc' )
 
-            Diftoa = self.differences(toa, toa_optical)  #
-            DiftoaI = self.differencesTwo(toa, toa_isrf_L)  #
+            #Diftoa = self.differences(toa, toa_optical)
+            #DiftoaI = self.differencesTwo(toa, toa_isrf_L)
 
-            figone= self.plottwo(toa_isrf, toa_isrf_L)
-            figone.savefig("/home/luss/my_shared_folder/test_ISM/Figure_" + band + 'png')
+            #figone= self.plottwo(toa_isrf, toa_isrf_L)
+            #figone.savefig("/home/luss/my_shared_folder/test_ISM/Figure_" + band + 'png')
 
-            figtwo= self.plottwo2(toa, toa_optical)
-            figtwo.savefig("/home/luss/my_shared_folder/test_ISM/Figure2_" + band + 'png')
+            #figtwo= self.plottwo2(toa, toa_optical)
+            #figtwo.savefig("/home/luss/my_shared_folder/test_ISM/Figure2_" + band + 'png')
 
-            Tr = self.ismConfig.Tr
-            print(Tr)
+            #Tr = self.ismConfig.Tr
+            #print(Tr)
 
 
 

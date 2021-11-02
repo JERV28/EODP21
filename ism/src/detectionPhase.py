@@ -98,8 +98,8 @@ class detectionPhase(initIsm):
             plotF([], toa[idalt,:], title_str, xlabel_str, ylabel_str, self.outdir, saveas_str)
 
 
-            toa_detection=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_detection_" + band + '.nc' )
-            Diftoa = self.differences(toa, toa_detection)
+            #toa_detection=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_detection_" + band + '.nc' )
+            #Diftoa = self.differences(toa, toa_detection)
 
 
         return toa

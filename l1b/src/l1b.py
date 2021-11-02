@@ -62,15 +62,15 @@ class l1b(initL1b):
             writeToa(self.outdir, self.globalConfig.l1b_toa + band, toa)
             #self.plotL1bToa(toa, self.outdir, band)
 
-            Diftoa = self.differences(toa, toa_l1b_ref)  # Punto 1
+            #Diftoa = self.differences(toa, toa_l1b_ref)  # Punto 1
 
-            toa_isrf=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_isrf_" + band + '.nc' )
+            #toa_isrf=readToa("/home/luss/my_shared_folder/EODP_TER_2021/EODP-TS-ISM/output/","ism_toa_isrf_" + band + '.nc' )
 
-            figone= self.plottwo(toa, toa_isrf)
-            figone.savefig("/home/luss/my_shared_folder/test_L1b/Figure_" + band)
+            #figone= self.plottwo(toa, toa_isrf)
+            #figone.savefig("/home/luss/my_shared_folder/test_L1b/Figure_" + band)
 
-            figtwo= self.plottwo2(toa, toa2)
-            figtwo.savefig("/home/luss/my_shared_folder/test_L1b/Figure2_" + band)
+            #figtwo= self.plottwo2(toa, toa2)
+            #figtwo.savefig("/home/luss/my_shared_folder/test_L1b/Figure2_" + band)
 
 
 
